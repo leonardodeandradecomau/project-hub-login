@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitar Acesso - Project HUB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #4B39EF; 
+            --primary-glow: rgba(75, 57, 239, 0.35);
+            --primary-focus: rgba(75, 57, 239, 0.15);
+            --text-dark: #1F2937;
+            --text-gray: #4B5563;
+            --text-light: #6B7280;
+            --border-color: #D1D5DB;
+            --bg-body: #F4F7FB;
+            
+            /* Cores para validação de senha */
+            --valid-color: #10B981; /* Verde */
+            --invalid-color: #EF4444; /* Vermelho */
+        }
+
+        body {
+            margin: 0;
+            padding: 20px 0; /* Um pouco de padding vertical pois o form é longo */
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f0f4f8 0%, #ffffff 50%, #eef2f6 100%);
+            box-sizing: border-box;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 460px; /* Um pouco mais largo que o login */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Cabeçalho */
+        .header-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo-img {
+            height: 60px;
+            width: auto;
+            display: block;
+            margin: 0 auto 15px auto;
+            object-fit: contain;
+        }
+
+        .title {
+            color: var(--primary-color);
+            font-size: 28px;
+            font-weight: 800;
+            margin: 0 0 10px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: var(--text-gray);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* Cartão Branco */
+        .login-card {
+            background-color: #ffffff;
+            width: 100%;
+            border-radius: 16px;
+            padding: 35px 40px;
+            box-shadow: 0px 12px 35px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
+        }
+
+        /* Formulário */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i.left-icon {
+            position: absolute;
+            left: 16px;
+            color: #9CA3AF;
+            font-size: 15px;
+        }
+
+        .input-wrapper i.right-icon {
+            position: absolute;
+            right: 16px;
+            color: #9CA3AF;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--text-dark);
+            outline: none;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .input-wrapper input::placeholder {
+            color: #9CA3AF;
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px var(--primary-focus); 
+        }
+
+        .input-wrapper input:focus + i.left-icon,
+        .input-wrapper:focus-within i.left-icon {
+            color: var(--primary-color);
+        }
+
+        /* --- REQUISITOS DE SENHA --- */
+        .password-requirements {
+            background-color: #F9FAFB;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            margin-top: -5px;
+        }
+
+        .password-requirements p {
+            margin: 0 0 10px 0;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .requirement-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Duas colunas */
+            gap: 8px;
+        }
+
+        .requirement-list li {
+            font-size: 11px;
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .requirement-list li i {
+            font-size: 10px;
+            color: var(--text-light); /* Cinza padrão */
+            transition: color 0.2s;
+        }
+
+        /* Classes que o JS vai alternar para mostrar se está válido ou inválido */
+        .requirement-list li.valid i { color: var(--valid-color); }
+        .requirement-list li.valid { color: var(--text-dark); }
+        
+        .requirement-list li.invalid i { color: var(--invalid-color); }
+
+        /* Botão Enviar */
+        .btn-submit {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            box-shadow: 0 8px 20px -6px var(--primary-glow);
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: #3b2cc4;
+            box-shadow: 0 10px 25px -5px var(--primary-glow);
+            transform: translateY(-1px);
+        }
+
+        /* Link Voltar */
+        .back-link {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .back-link a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .back-link a:hover {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        
+        <!-- Cabeçalho -->
+        <div class="header-section">
+            <img src="logo comau.webp" alt="Comau Logo" class="logo-img">
+            <h1 class="title">Solicitar acesso</h1>
+            <p class="subtitle">Preencha seus dados para pedir acesso ao Project HUB.</p>
+        </div>
+
+        <!-- Cartão -->
+        <div class="login-card">
+            
+            <form action="#" method="POST" id="formSolicitacao">
+                
+                <div class="input-group">
+                    <label for="nome">Nome Completo</label>
+                    <div class="input-wrapper">
+                        <i class="far fa-user left-icon"></i>
+                        <input type="text" id="nome" placeholder="Seu nome completo" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">E-mail corporativo</label>
+                    <div class="input-wrapper">
+                        <i class="far fa-envelope left-icon"></i>
+                        <input type="email" id="email" placeholder="nome@comau.com" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="departamento">Departamento</label>
+                    <div class="input-wrapper">
+                        <i class="far fa-building left-icon"></i>
+                        <input type="text" id="departamento" placeholder="Ex: Engenharia, TI, Produção..." required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="motivo">Motivo do Acesso</label>
+                    <div class="input-wrapper">
+                        <i class="far fa-file-alt left-icon"></i>
+                        <input type="text" id="motivo" placeholder="Por que você precisa de acesso ao Project HUB?" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="senha">Senha *</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock left-icon"></i>
+                        <input type="password" id="senha" placeholder="Crie uma senha forte" required>
+                        <i class="far fa-eye-slash right-icon toggle-password" onclick="togglePassword('senha', this)"></i>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="confirma_senha">Confirmar Senha *</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock left-icon"></i>
+                        <input type="password" id="confirma_senha" placeholder="Repita a senha" required>
+                        <i class="far fa-eye-slash right-icon toggle-password" onclick="togglePassword('confirma_senha', this)"></i>
+                    </div>
+                </div>
+
+                <!-- Requisitos de Senha -->
+                <div class="password-requirements">
+                    <p>Sua senha deve conter:</p>
+                    <ul class="requirement-list">
+                        <li id="req-length"><i class="fas fa-circle"></i> Mínimo 8 caracteres</li>
+                        <li id="req-upper"><i class="fas fa-circle"></i> 1 letra maiúscula</li>
+                        <li id="req-number"><i class="fas fa-circle"></i> 1 número</li>
+                        <li id="req-special"><i class="fas fa-circle"></i> 1 caractere especial (@, #, $)</li>
+                        <li id="req-match" style="grid-column: 1 / -1;"><i class="fas fa-circle"></i> As senhas coincidem</li>
+                    </ul>
+                </div>
+
+                <button type="submit" class="btn-submit">Enviar solicitação</button>
+                
+                <div class="back-link">
+                    <a href="index.html"><i class="fas fa-arrow-left"></i> Voltar para o login</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Função para mostrar/ocultar senha
+        function togglePassword(inputId, iconElement) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                iconElement.classList.remove('fa-eye-slash');
+                iconElement.classList.add('fa-eye');
+            } else {
+                input.type = "password";
+                iconElement.classList.remove('fa-eye');
+                iconElement.classList.add('fa-eye-slash');
+            }
+        }
+
+        // Validação de Senha em Tempo Real
+        const senhaInput = document.getElementById('senha');
+        const confirmaSenhaInput = document.getElementById('confirma_senha');
+        
+        const reqLength = document.getElementById('req-length');
+        const reqUpper = document.getElementById('req-upper');
+        const reqNumber = document.getElementById('req-number');
+        const reqSpecial = document.getElementById('req-special');
+        const reqMatch = document.getElementById('req-match');
+
+        function updateRequirement(element, isValid) {
+            const icon = element.querySelector('i');
+            if (isValid) {
+                element.classList.add('valid');
+                element.classList.remove('invalid');
+                icon.classList.remove('fa-circle', 'fa-times-circle');
+                icon.classList.add('fa-check-circle');
+            } else {
+                element.classList.remove('valid');
+                if (senhaInput.value.length > 0) {
+                    element.classList.add('invalid');
+                    icon.classList.remove('fa-circle', 'fa-check-circle');
+                    icon.classList.add('fa-times-circle');
+                } else {
+                    // Estado neutro se o campo estiver vazio
+                    element.classList.remove('invalid');
+                    icon.classList.remove('fa-check-circle', 'fa-times-circle');
+                    icon.classList.add('fa-circle');
+                }
+            }
+        }
+
+        function validatePassword() {
+            const val = senhaInput.value;
+            
+            // Mínimo 8 caracteres
+            updateRequirement(reqLength, val.length >= 8);
+            
+            // Letra Maiúscula
+            updateRequirement(reqUpper, /[A-Z]/.test(val));
+            
+            // Número
+            updateRequirement(reqNumber, /[0-9]/.test(val));
+            
+            // Caractere Especial
+            updateRequirement(reqSpecial, /[^A-Za-z0-9]/.test(val));
+
+            // Verificar se as senhas coincidem
+            checkMatch();
+        }
+
+        function checkMatch() {
+            const val1 = senhaInput.value;
+            const val2 = confirmaSenhaInput.value;
+            
+            if (val2.length > 0) {
+                updateRequirement(reqMatch, val1 === val2 && val1.length > 0);
+            } else {
+                updateRequirement(reqMatch, false);
+                if(val1.length === 0){
+                     reqMatch.classList.remove('invalid');
+                     reqMatch.querySelector('i').classList.remove('fa-times-circle');
+                     reqMatch.querySelector('i').classList.add('fa-circle');
+                }
+            }
+        }
+
+        senhaInput.addEventListener('input', validatePassword);
+        confirmaSenhaInput.addEventListener('input', checkMatch);
+
+    </script>
+</body>
+</html>
