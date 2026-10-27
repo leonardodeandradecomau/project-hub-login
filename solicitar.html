@@ -305,7 +305,7 @@
                 <div class="password-requirements">
                     <p>Sua senha deve conter:</p>
                     <ul class="requirement-list">
-                        <li id="req-length"><i class="fas fa-circle"></i> Mínimo 8 caracteres</li>
+                        <li id="req-length"><i class="fas fa-circle"></i> Mínimo 6 caracteres</li>
                         <li id="req-upper"><i class="fas fa-circle"></i> 1 letra maiúscula</li>
                         <li id="req-number"><i class="fas fa-circle"></i> 1 número</li>
                         <li id="req-special"><i class="fas fa-circle"></i> 1 caractere especial (@, #, $)</li>
@@ -373,8 +373,8 @@
         function validatePassword() {
             const val = senhaInput.value;
             
-            // Mínimo 8 caracteres
-            updateRequirement(reqLength, val.length >= 8);
+            // Mínimo 6 caracteres
+            updateRequirement(reqLength, val.length >= 6);
             
             // Letra Maiúscula
             updateRequirement(reqUpper, /[A-Z]/.test(val));
